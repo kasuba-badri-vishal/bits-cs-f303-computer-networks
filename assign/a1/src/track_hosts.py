@@ -2,6 +2,8 @@ import csv
 import subprocess
 import re
 import matplotlib.pyplot as plt
+import schedule
+import time
 
 
 
@@ -39,8 +41,7 @@ def write_output(data):
         csvwriter.writerow(data)
 
 def find_hosts():
-    # host = input("Enter the desired subnet : ")
-    # freq = input("Enter the desired probing Frequency : ")
+    
     host = '172.16.34.0/24'
     result = subprocess.check_output(['nmap','-sP',host]).decode('utf-8')
     print(result)
@@ -52,9 +53,22 @@ def find_hosts():
     return res
 
 
-if __name__ == "__main__":
+def main():
     data = find_hosts()
     write_output(data)
     plot_graph()
+
+# schedule.every().hour.at(":00").do(main)
+
+if __name__ == "__main__":
+    # host = input("Enter the desired subnet : ")
+    # freq = input("Enter the desired probing Frequency : ")
+  
+    while True:
+        # schedule.run_pending()
+        
+        # time.sleep(1)
+        main()
+  
 
     
