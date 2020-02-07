@@ -2,9 +2,14 @@ import csv
 import subprocess
 import re
 import matplotlib.pyplot as plt
+<<<<<<< HEAD
+import schedule
+import time
+=======
 import argparse
 import time
 # from datetime import datetime as dt
+>>>>>>> 16d5a551c1e5ce40fc81fb787c97c17d3a50d4c3
 
 parser = argparse.ArgumentParser(description="Tracking hosts.")
 parser.add_argument('-f', type=int, default = 4, \
@@ -35,8 +40,14 @@ def write_output(data):
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(data)
 
+<<<<<<< HEAD
+def find_hosts():
+    
+    host = '172.16.34.0/24'
+=======
 def find_hosts(subnet):
     host = f'172.16.34.0/{subnet}'
+>>>>>>> 16d5a551c1e5ce40fc81fb787c97c17d3a50d4c3
     result = subprocess.check_output(['nmap','-sP',host]).decode('utf-8')
     print(result)
     # match = re.search(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2} IST', result)
@@ -51,6 +62,27 @@ def find_hosts(subnet):
     return res
 
 
+<<<<<<< HEAD
+def main():
+    data = find_hosts()
+    write_output(data)
+    plot_graph()
+
+# schedule.every().hour.at(":00").do(main)
+
+if __name__ == "__main__":
+    # host = input("Enter the desired subnet : ")
+    # freq = input("Enter the desired probing Frequency : ")
+  
+    while True:
+        # schedule.run_pending()
+        
+        # time.sleep(1)
+        main()
+  
+
+    
+=======
 if __name__ == "__main__":
     args = parser.parse_args()
     while(True):
@@ -59,3 +91,4 @@ if __name__ == "__main__":
         write_output(data)
         time.sleep((3600/args.f))
         # plot_graph()
+>>>>>>> 16d5a551c1e5ce40fc81fb787c97c17d3a50d4c3

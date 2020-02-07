@@ -58,4 +58,4 @@ if __name__ == "__main__":
         print(data)
         write_output(data)
         time.sleep((3600/args.f))
-        # plot_graph()
+    # plot_graph()
