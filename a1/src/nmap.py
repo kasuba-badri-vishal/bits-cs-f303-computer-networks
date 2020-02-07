@@ -14,6 +14,7 @@ def mainmenu():
 def Host_Discovery():
     host = input("[*]Please enter Host address to Scan : ")
     print("-"*80)
+    # subprocess.check_call(['nmap','-n','-v','-Pn','-sn','-sL','-PE','-PP','-oN','HostDiscovery.txt',host])
     subprocess.check_call(['nmap','-n','-v','-Pn','-sn','-sL','-PE','-PP','-oN','HostDiscovery.txt',host])
     print("-"*80)
 
