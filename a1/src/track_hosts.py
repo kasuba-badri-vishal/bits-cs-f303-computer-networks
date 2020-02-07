@@ -4,6 +4,7 @@ import re
 import matplotlib.pyplot as plt
 import argparse
 import time
+import numpy as np
 # from datetime import datetime as dt
 
 parser = argparse.ArgumentParser(description="Tracking hosts.")
@@ -12,19 +13,29 @@ parser.add_argument('-f', type=int, default = 4, \
 parser.add_argument('-s', type=int, default=24, help="subnet mask")
 
 def plot_graph():
-    x=[]
+    x=dict()
     y=[]
 
-    with open('output.csv', 'r') as csvfile:
+    with open('output2.csv', 'r') as csvfile:
         plots= csv.reader(csvfile, delimiter=',')
         for row in plots:
-            x.append(row[1])
-            y.append(row[0])
-
-    plt.plot(x,y)
+            k = row[1].split()[0]
+            if k in x:
+                x[k][0].append(int(row[1].split()[1].split(":")[0]))
+                x[k][1].append(int(row[0]))
+            else:
+                x[k] = [[int(row[1].split()[1].split(":")[0])], [int(row[0])]]
+    print(x)
+    fig,ax = plt.subplots()
+    
+    for day in x.keys():
+        plt.plot(x[day][0], x[day][1], label=day)
     plt.title('Data from the CSV File: No of hosts and Time')
-    plt.xlabel('Number of Hosts')
-    plt.ylabel('Time')
+    plt.ylabel('Number of Hosts')
+    plt.xlabel('Time')
+    ax.legend()
+    # plt.xlim(0,24.1)
+    plt.xticks(np.arange(0, 24, 1.0))
     plt.show()
 
 def write_output(data):
@@ -52,10 +63,10 @@ def find_hosts(subnet):
 
 
 if __name__ == "__main__":
-    args = parser.parse_args()
-    while(True):
-        data = find_hosts(args.s)
-        print(data)
-        write_output(data)
-        time.sleep((3600/args.f))
-    # plot_graph()
+    # args = parser.parse_args()
+    # while(True):
+    #     data = find_hosts(args.s)
+    #     print(data)
+    #     write_output(data)
+    #     time.sleep((3600/args.f))
+    plot_graph()
