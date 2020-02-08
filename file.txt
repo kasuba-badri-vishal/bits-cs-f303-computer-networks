@@ -1,0 +1,781 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-02-06 23:05 IST
+Nmap scan report for 172.16.34.1
+Host is up (0.00077s latency).
+Not shown: 990 closed ports
+PORT      STATE    SERVICE
+21/tcp    filtered ftp
+22/tcp    open     ssh
+111/tcp   filtered rpcbind
+161/tcp   open     snmp
+512/tcp   filtered exec
+513/tcp   filtered login
+514/tcp   filtered shell
+2049/tcp  filtered nfs
+27000/tcp filtered flexlm0
+32768/tcp filtered filenet-tms
+MAC Address: B0:8B:CF:D7:B0:07 (Cisco Systems)
+
+Nmap scan report for 172.16.34.13
+Host is up (0.0011s latency).
+All 1000 scanned ports on 172.16.34.13 are filtered
+MAC Address: D8:D0:90:5F:8F:50 (Dell)
+
+Nmap scan report for 172.16.34.14
+Host is up (0.00086s latency).
+All 1000 scanned ports on 172.16.34.14 are filtered
+MAC Address: D8:0D:17:15:79:44 (Tp-link Technologies)
+
+Nmap scan report for 172.16.34.15
+Host is up (0.0014s latency).
+Not shown: 997 closed ports
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: 3C:52:82:45:09:2D (Hewlett Packard)
+
+Nmap scan report for 172.16.34.17
+Host is up (0.0014s latency).
+Not shown: 993 filtered ports
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+1688/tcp  open  nsjtp-data
+5357/tcp  open  wsdapi
+7070/tcp  open  realserver
+49152/tcp open  unknown
+MAC Address: 10:E7:C6:7D:D1:C3 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.18
+Host is up (0.0015s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 54:EE:75:54:34:E5 (Wistron InfoComm(Kunshan)Co.)
+
+Nmap scan report for 172.16.34.21
+Host is up (0.0042s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+6646/tcp open  unknown
+MAC Address: 04:D4:C4:16:CD:AD (Asustek Computer)
+
+Nmap scan report for 172.16.34.25
+Host is up (0.00044s latency).
+Not shown: 998 closed ports
+PORT    STATE SERVICE
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: A8:1E:84:33:E9:33 (Quanta Computer)
+
+Nmap scan report for 172.16.34.26
+Host is up (0.0015s latency).
+Not shown: 996 closed ports
+PORT     STATE    SERVICE
+23/tcp   filtered telnet
+80/tcp   filtered http
+1050/tcp open     java-or-OTGfileshare
+8080/tcp open     http-proxy
+MAC Address: 78:D9:9F:D4:5F:17 (NuCom HK)
+
+Nmap scan report for 172.16.34.27
+Host is up (0.0014s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 00:D8:61:08:73:07 (Micro-star Intl)
+
+Nmap scan report for 172.16.34.28
+Host is up (0.0012s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 98:28:A6:2C:A8:41 (Compal Information (kunshan))
+
+Nmap scan report for 172.16.34.29
+Host is up (0.00059s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE
+5900/tcp open  vnc
+MAC Address: 3C:18:A0:9C:4E:5F (Luxshare Precision Industry Company Limited)
+
+Nmap scan report for 172.16.34.32
+Host is up (0.00092s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: 80:CE:62:3C:59:7B (Hewlett Packard)
+
+Nmap scan report for 172.16.34.35
+Host is up (0.0012s latency).
+All 1000 scanned ports on 172.16.34.35 are filtered
+MAC Address: E4:6F:13:7C:7A:BD (D-Link International)
+
+Nmap scan report for 172.16.34.37
+Host is up (0.00036s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE
+5432/tcp open  postgresql
+MAC Address: C8:5B:76:45:3B:C9 (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.38
+Host is up (0.0011s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 80:FA:5B:72:3F:E1 (Clevo)
+
+Nmap scan report for 172.16.34.40
+Host is up (0.0017s latency).
+All 1000 scanned ports on 172.16.34.40 are filtered
+MAC Address: 04:95:E6:BC:FF:D0 (Tenda Technology,Ltd.Dongguan branch)
+
+Nmap scan report for 172.16.34.42
+Host is up (0.0011s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 14:58:D0:0B:8A:BB (Hewlett Packard)
+
+Nmap scan report for 172.16.34.44
+Host is up (0.00050s latency).
+All 1000 scanned ports on 172.16.34.44 are filtered
+MAC Address: 98:FA:9B:54:4B:9A (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.48
+Host is up (0.0011s latency).
+Not shown: 998 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+6646/tcp open  unknown
+MAC Address: 50:7B:9D:F1:CB:AC (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.52
+Host is up (0.00073s latency).
+All 1000 scanned ports on 172.16.34.52 are filtered
+MAC Address: 00:0E:09:86:A0:4A (Shenzhen Coship Software)
+
+Nmap scan report for 172.16.34.53
+Host is up (0.0015s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 10:7D:1A:12:CA:9F (Dell)
+
+Nmap scan report for 172.16.34.55
+Host is up (0.0014s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: 1C:39:47:E9:CD:F7 (Compal Information (kunshan))
+
+Nmap scan report for 172.16.34.57
+Host is up (0.0012s latency).
+All 1000 scanned ports on 172.16.34.57 are filtered
+MAC Address: 80:3F:5D:8B:99:2F (Winstars Technology)
+
+Nmap scan report for 172.16.34.58
+Host is up (0.0015s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: 22:35:78:41:22:75 (Unknown)
+
+Nmap scan report for 172.16.34.61
+Host is up (0.00089s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: AC:E2:D3:68:7C:AC (Hewlett Packard)
+
+Nmap scan report for 172.16.34.62
+Host is up (0.0020s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: 80:CE:62:50:BE:D6 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.64
+Host is up (0.00049s latency).
+Not shown: 996 closed ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: 98:40:BB:1F:38:F6 (Dell)
+
+Nmap scan report for 172.16.34.65
+Host is up (0.00037s latency).
+Not shown: 998 closed ports
+PORT    STATE SERVICE
+80/tcp  open  http
+902/tcp open  iss-realsecure
+MAC Address: 70:5A:0F:EB:C0:FA (Hewlett Packard)
+
+Nmap scan report for 172.16.34.69
+Host is up (0.00038s latency).
+All 1000 scanned ports on 172.16.34.69 are filtered
+MAC Address: 48:EE:0C:CF:E3:2B (D-Link International)
+
+Nmap scan report for 172.16.34.71
+Host is up (0.0013s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 3C:52:82:E6:18:9B (Hewlett Packard)
+
+Nmap scan report for 172.16.34.73
+Host is up (0.00086s latency).
+All 1000 scanned ports on 172.16.34.73 are filtered
+MAC Address: 98:28:A6:1B:D4:C2 (Compal Information (kunshan))
+
+Nmap scan report for 172.16.34.76
+Host is up (0.0016s latency).
+Not shown: 995 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: A4:4C:C8:09:FB:AE (Dell)
+
+Nmap scan report for 172.16.34.79
+Host is up (0.0010s latency).
+All 1000 scanned ports on 172.16.34.79 are filtered
+MAC Address: 60:45:CB:2E:6C:F7 (Asustek Computer)
+
+Nmap scan report for 172.16.34.81
+Host is up (0.0013s latency).
+Not shown: 994 filtered ports
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+554/tcp   open  rtsp
+2869/tcp  open  icslap
+10243/tcp open  unknown
+MAC Address: 3C:97:0E:EA:13:C4 (Wistron InfoComm(Kunshan)Co.)
+
+Nmap scan report for 172.16.34.82
+Host is up (0.0029s latency).
+Not shown: 994 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+1666/tcp open  netview-aix-6
+6646/tcp open  unknown
+6881/tcp open  bittorrent-tracker
+MAC Address: 00:0E:09:86:CA:BA (Shenzhen Coship Software)
+
+Nmap scan report for 172.16.34.88
+Host is up (0.0013s latency).
+All 1000 scanned ports on 172.16.34.88 are filtered
+MAC Address: C0:A0:BB:C5:B1:C1 (D-Link International)
+
+Nmap scan report for 172.16.34.90
+Host is up (0.0014s latency).
+Not shown: 998 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+6646/tcp open  unknown
+MAC Address: 00:0E:09:86:A2:A3 (Shenzhen Coship Software)
+
+Nmap scan report for 172.16.34.91
+Host is up (0.00040s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+MAC Address: 10:7B:44:B8:AA:38 (Asustek Computer)
+
+Nmap scan report for 172.16.34.92
+Host is up (0.0016s latency).
+Not shown: 995 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+1309/tcp open  jtag-server
+2869/tcp open  icslap
+MAC Address: 54:E1:AD:62:04:08 (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.94
+Host is up (0.00042s latency).
+All 1000 scanned ports on 172.16.34.94 are closed
+MAC Address: EC:F4:BB:2B:E6:C2 (Dell)
+
+Nmap scan report for 172.16.34.96
+Host is up (0.00038s latency).
+All 1000 scanned ports on 172.16.34.96 are closed
+MAC Address: 8C:EC:4B:2D:47:B5 (Dell)
+
+Nmap scan report for 172.16.34.97
+Host is up (0.0016s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 98:29:A6:3C:BE:78 (Compal Information (kunshan))
+
+Nmap scan report for 172.16.34.98
+Host is up (0.0014s latency).
+Not shown: 992 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+1801/tcp open  msmq
+2103/tcp open  zephyr-clt
+2105/tcp open  eklogin
+2107/tcp open  msmq-mgmt
+5357/tcp open  wsdapi
+MAC Address: A0:B3:CC:83:7C:33 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.99
+Host is up (0.0021s latency).
+All 1000 scanned ports on 172.16.34.99 are filtered
+MAC Address: 58:D5:6E:D7:03:2F (D-Link International)
+
+Nmap scan report for 172.16.34.101
+Host is up (0.00027s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+MAC Address: 3C:52:82:06:8F:F1 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.103
+Host is up (0.0023s latency).
+All 1000 scanned ports on 172.16.34.103 are filtered
+MAC Address: 80:26:89:00:E7:81 (D-Link International)
+
+Nmap scan report for 172.16.34.104
+Host is up (0.0013s latency).
+All 1000 scanned ports on 172.16.34.104 are filtered
+MAC Address: 80:26:89:00:E7:4F (D-Link International)
+
+Nmap scan report for 172.16.34.107
+Host is up (0.0011s latency).
+Not shown: 998 filtered ports
+PORT    STATE SERVICE
+80/tcp  open  http
+135/tcp open  msrpc
+MAC Address: F4:30:B9:97:A0:5F (Hewlett Packard)
+
+Nmap scan report for 172.16.34.108
+Host is up (0.0013s latency).
+Not shown: 993 filtered ports
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+554/tcp   open  rtsp
+2869/tcp  open  icslap
+5357/tcp  open  wsdapi
+10243/tcp open  unknown
+MAC Address: 64:00:6A:FA:87:55 (Dell)
+
+Nmap scan report for 172.16.34.109
+Host is up (0.0016s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 8C:16:45:87:6F:CE (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.110
+Host is up (0.0015s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: 54:E1:AD:50:A5:26 (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.111
+Host is up (0.00066s latency).
+Not shown: 996 closed ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: 54:BF:64:4D:D8:BA (Dell)
+
+Nmap scan report for 172.16.34.112
+Host is up (0.0015s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: C8:5B:76:76:10:28 (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.113
+Host is up (0.0024s latency).
+All 1000 scanned ports on 172.16.34.113 are filtered
+MAC Address: 6C:72:20:6F:A5:E7 (D-Link International)
+
+Nmap scan report for 172.16.34.114
+Host is up (0.0016s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 58:8A:5A:0E:67:D9 (Dell)
+
+Nmap scan report for 172.16.34.115
+Host is up (0.0016s latency).
+Not shown: 995 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+6646/tcp open  unknown
+MAC Address: 84:A9:3E:16:85:D5 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.119
+Host is up (0.0056s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: 96:E9:BF:F2:FC:1E (Unknown)
+
+Nmap scan report for 172.16.34.120
+Host is up (0.00033s latency).
+All 1000 scanned ports on 172.16.34.120 are closed
+MAC Address: 30:E1:71:97:DF:0E (Hewlett Packard)
+
+Nmap scan report for 172.16.34.123
+Host is up (0.00034s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE
+2809/tcp open  corbaloc
+MAC Address: 40:B0:34:6E:38:60 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.126
+Host is up (0.0011s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 30:9C:23:91:BC:3A (Micro-star Intl)
+
+Nmap scan report for 172.16.34.127
+Host is up (0.0015s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 54:E1:AD:54:EB:8E (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.136
+Host is up (0.00035s latency).
+Not shown: 995 closed ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3389/tcp open  ms-wbt-server
+5357/tcp open  wsdapi
+MAC Address: B4:2E:99:3D:71:32 (Giga-byte Technology)
+
+Nmap scan report for 172.16.34.138
+Host is up (0.036s latency).
+All 1000 scanned ports on 172.16.34.138 are closed
+MAC Address: 10:7B:44:DE:D0:D4 (Asustek Computer)
+
+Nmap scan report for 172.16.34.140
+Host is up (0.0015s latency).
+Not shown: 998 filtered ports
+PORT    STATE SERVICE
+80/tcp  open  http
+443/tcp open  https
+MAC Address: 54:E1:AD:54:F4:67 (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.141
+Host is up (0.0042s latency).
+Not shown: 996 filtered ports
+PORT     STATE  SERVICE
+53/tcp   closed domain
+80/tcp   closed http
+443/tcp  closed https
+3389/tcp closed ms-wbt-server
+MAC Address: 00:26:6C:ED:7B:9B (Inventec)
+
+Nmap scan report for 172.16.34.145
+Host is up (0.0018s latency).
+Not shown: 995 filtered ports
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+8080/tcp  open  http-proxy
+10243/tcp open  unknown
+MAC Address: 38:63:BB:E3:16:F9 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.147
+Host is up (0.0015s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 18:60:24:B6:46:2E (Hewlett Packard)
+
+Nmap scan report for 172.16.34.151
+Host is up (0.0011s latency).
+All 1000 scanned ports on 172.16.34.151 are filtered
+MAC Address: 98:28:A6:1D:F5:B2 (Compal Information (kunshan))
+
+Nmap scan report for 172.16.34.153
+Host is up (0.0016s latency).
+Not shown: 997 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+2869/tcp open  icslap
+MAC Address: 00:25:64:4A:52:5E (Dell)
+
+Nmap scan report for 172.16.34.163
+Host is up (0.00039s latency).
+All 1000 scanned ports on 172.16.34.163 are filtered
+MAC Address: 00:D8:61:07:BA:1C (Micro-star Intl)
+
+Nmap scan report for 172.16.34.168
+Host is up (0.0016s latency).
+Not shown: 998 filtered ports
+PORT     STATE SERVICE
+5800/tcp open  vnc-http
+5900/tcp open  vnc
+MAC Address: 00:E0:4C:36:05:00 (Realtek Semiconductor)
+
+Nmap scan report for 172.16.34.169
+Host is up (0.0023s latency).
+All 1000 scanned ports on 172.16.34.169 are filtered
+MAC Address: F0:76:1C:E0:D3:C0 (Compal Information (kunshan))
+
+Nmap scan report for 172.16.34.173
+Host is up (0.0017s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: 54:E1:AD:36:5B:BE (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.176
+Host is up (0.0013s latency).
+All 1000 scanned ports on 172.16.34.176 are closed
+MAC Address: 40:31:3C:E5:DA:B3 (Xiaomi Electronics,co.)
+
+Nmap scan report for 172.16.34.177
+Host is up (0.0032s latency).
+Not shown: 995 filtered ports
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+56737/tcp open  unknown
+56738/tcp open  unknown
+MAC Address: 54:E1:AD:6C:77:15 (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.178
+Host is up (0.00049s latency).
+All 1000 scanned ports on 172.16.34.178 are filtered
+MAC Address: 74:E6:E2:52:93:5C (Dell)
+
+Nmap scan report for 172.16.34.179
+Host is up (0.00069s latency).
+All 1000 scanned ports on 172.16.34.179 are filtered
+MAC Address: D4:81:D7:6D:E3:70 (Dell)
+
+Nmap scan report for 172.16.34.180
+Host is up (0.0012s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+53/tcp open  domain
+MAC Address: 34:29:8F:91:08:05 (Ieee Registration Authority)
+
+Nmap scan report for 172.16.34.184
+Host is up (0.00085s latency).
+All 1000 scanned ports on 172.16.34.184 are filtered
+MAC Address: 8C:16:45:37:70:E2 (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.186
+Host is up (0.00058s latency).
+All 1000 scanned ports on 172.16.34.186 are filtered
+MAC Address: D4:81:D7:EB:C9:E4 (Dell)
+
+Nmap scan report for 172.16.34.187
+Host is up (0.0014s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE
+3306/tcp open  mysql
+MAC Address: 58:EF:68:7F:87:3C (Belkin International)
+
+Nmap scan report for 172.16.34.188
+Host is up (0.0014s latency).
+All 1000 scanned ports on 172.16.34.188 are filtered
+MAC Address: 3C:A8:2A:BC:41:E8 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.189
+Host is up (0.00053s latency).
+All 1000 scanned ports on 172.16.34.189 are filtered
+MAC Address: 3C:2C:30:9B:4F:F2 (Dell)
+
+Nmap scan report for 172.16.34.190
+Host is up (0.00047s latency).
+All 1000 scanned ports on 172.16.34.190 are filtered
+MAC Address: F4:30:B9:D6:7D:05 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.197
+Host is up (0.0015s latency).
+All 1000 scanned ports on 172.16.34.197 are filtered
+MAC Address: 00:01:08:0A:0D:0E (Avlab Technology)
+
+Nmap scan report for 172.16.34.198
+Host is up (0.0010s latency).
+All 1000 scanned ports on 172.16.34.198 are filtered
+MAC Address: 50:3E:AA:DC:A6:82 (Tp-link Technologies)
+
+Nmap scan report for 172.16.34.199
+Host is up (0.00072s latency).
+All 1000 scanned ports on 172.16.34.199 are filtered
+MAC Address: 50:3E:AA:DB:B6:29 (Tp-link Technologies)
+
+Nmap scan report for 172.16.34.201
+Host is up (0.0040s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+6646/tcp open  unknown
+MAC Address: 00:E0:4C:36:06:DA (Realtek Semiconductor)
+
+Nmap scan report for 172.16.34.205
+Host is up (0.0014s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5357/tcp open  wsdapi
+MAC Address: 00:0E:09:86:84:F2 (Shenzhen Coship Software)
+
+Nmap scan report for 172.16.34.207
+Host is up (0.0016s latency).
+All 1000 scanned ports on 172.16.34.207 are filtered
+MAC Address: 20:47:47:E5:82:69 (Dell)
+
+Nmap scan report for 172.16.34.211
+Host is up (0.0013s latency).
+All 1000 scanned ports on 172.16.34.211 are filtered
+MAC Address: 98:29:A6:33:58:E3 (Compal Information (kunshan))
+
+Nmap scan report for 172.16.34.212
+Host is up (0.0017s latency).
+All 1000 scanned ports on 172.16.34.212 are filtered
+MAC Address: C8:5B:76:D3:5A:1D (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.216
+Host is up (0.0011s latency).
+All 1000 scanned ports on 172.16.34.216 are filtered
+MAC Address: 48:BA:4E:28:DA:D2 (Hewlett Packard)
+
+Nmap scan report for 172.16.34.218
+Host is up (0.0016s latency).
+All 1000 scanned ports on 172.16.34.218 are filtered
+MAC Address: 00:26:F2:9B:A3:1F (Netgear)
+
+Nmap scan report for 172.16.34.219
+Host is up (0.0024s latency).
+All 1000 scanned ports on 172.16.34.219 are filtered
+MAC Address: 00:E0:4C:36:06:5A (Realtek Semiconductor)
+
+Nmap scan report for 172.16.34.226
+Host is up (0.0017s latency).
+Not shown: 997 filtered ports
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+MAC Address: 70:5A:0F:97:85:5D (Hewlett Packard)
+
+Nmap scan report for 172.16.34.227
+Host is up (0.033s latency).
+Not shown: 996 filtered ports
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+1947/tcp  open  sentinelsrm
+2179/tcp  open  vmrdp
+27000/tcp open  flexlm0
+MAC Address: 12:34:56:78:90:AB (Unknown)
+
+Nmap scan report for 172.16.34.228
+Host is up (0.0012s latency).
+All 1000 scanned ports on 172.16.34.228 are filtered
+MAC Address: C8:5B:76:C4:39:AA (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.236
+Host is up (0.0017s latency).
+Not shown: 998 filtered ports
+PORT      STATE SERVICE
+1947/tcp  open  sentinelsrm
+27000/tcp open  flexlm0
+MAC Address: 8C:16:45:D3:D1:6A (Lcfc(hefei) Electronics Technology)
+
+Nmap scan report for 172.16.34.237
+Host is up (0.0016s latency).
+All 1000 scanned ports on 172.16.34.237 are filtered
+MAC Address: 54:BF:64:20:34:4C (Dell)
+
+Nmap scan report for 172.16.34.239
+Host is up (0.00049s latency).
+All 1000 scanned ports on 172.16.34.239 are closed
+MAC Address: 88:D7:F6:23:2D:09 (Asustek Computer)
+
+Nmap scan report for 172.16.34.241
+Host is up (0.0019s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: C8:D3:FF:D5:81:9F (Hewlett Packard)
+
+Nmap scan report for 172.16.34.245
+Host is up (0.0012s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+8080/tcp open  http-proxy
+MAC Address: 10:7D:1A:2C:0E:19 (Dell)
+
+Nmap scan report for 172.16.34.247
+Host is up (0.0014s latency).
+Not shown: 999 filtered ports
+PORT     STATE SERVICE
+5357/tcp open  wsdapi
+MAC Address: 30:65:EC:7D:89:8B (Wistron (ChongQing))
+
+Nmap scan report for 172.16.34.250
+Host is up (0.0019s latency).
+All 1000 scanned ports on 172.16.34.250 are filtered
+MAC Address: 88:D7:F6:1A:D3:AF (Asustek Computer)
+
+Nmap scan report for 172.16.34.253
+Host is up (0.0000080s latency).
+All 1000 scanned ports on 172.16.34.253 are closed
+
+Nmap done: 256 IP addresses (107 hosts up) scanned in 1529.33 seconds
