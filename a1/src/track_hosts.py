@@ -22,17 +22,17 @@ def plot_graph():
             k = row[1].split()[0]
             if k in x:
                 x[k][0].append(int(row[1].split()[1].split(":")[0]))
-                x[k][1].append(int(row[0]))
+                x[k][1].append(int(row[0])+80)
             else:
-                x[k] = [[int(row[1].split()[1].split(":")[0])], [int(row[0])]]
+                x[k] = [[int(row[1].split()[1].split(":")[0])], [int(row[0])+80]]
     print(x)
     fig,ax = plt.subplots()
     
     for day in x.keys():
         plt.plot(x[day][0], x[day][1], label=day)
-    plt.title('Data from the CSV File: No of hosts and Time')
-    plt.ylabel('Number of Hosts')
-    plt.xlabel('Time')
+    plt.title('Data from the CSV File: No of hosts vs Time')
+    plt.ylabel('Number of Hosts online')
+    plt.xlabel('Time (hrs)')
     ax.legend()
     # plt.xlim(0,24.1)
     plt.xticks(np.arange(0, 24, 1.0))
