@@ -100,7 +100,10 @@ class MyReliableUDPSocket:
 
     def read(self):
         '''
-        This method 
+        This method waits for all packets to be received and uses the reconstruct_data()
+        function to reconstruct the packets and extract data.
+
+        returns reconstructed data string
         '''
         data = ''
         # if self.connected:
@@ -113,6 +116,9 @@ class MyReliableUDPSocket:
         return data
 
     def recv(self):
+        '''
+        This function starts the recv_thread and retransmit_thread
+        '''
         self.recv_thread.start()
         self.retransmit_thread.start()
 
@@ -121,6 +127,11 @@ class MyReliableUDPSocket:
         # self.listen_for_connection()
 
     def recv_t(self):
+        '''
+        This function is the target of recv_thread. Until the connection is closed
+        it receives packets, decodes them into Packet objects and does operations
+        based on the packet Type.
+        '''
         while self.connected:
             try:
                 msg, addr = self.s.recvfrom(1024)
@@ -170,6 +181,13 @@ class MyReliableUDPSocket:
                     self.connected = False
                     
     def reconstruct_data(self, pkt_list = ""):
+        '''
+        This function uses the unordered packets in the recv_buffer,
+        puts them in order of sequence numbers and concatenates data
+        field in all packets to get the total data.
+        
+        returns data as string
+        '''
         data = ""
         if pkt_list=="":
             sorted_list = sorted(self.recv_buffer, key = lambda p:p.seq_num)
@@ -183,6 +201,11 @@ class MyReliableUDPSocket:
         return data        
 
     def check_and_retransmit(self):
+        '''
+        This is the target function for retransmit_thread. Until the connection 
+        is disconnected it checks if any packet in the seq_list (sent packets) is timed out
+        and retransmits them.
+        '''
         while self.connected:
             t = time.time()
             time.sleep(0.5)
@@ -194,10 +217,15 @@ class MyReliableUDPSocket:
                     if self.verbose:
                         print(f"retransmitting seq {seq_num}")
                     # self.seq_dict[seq_num][1] = t
-                    if self.seq_list.get(seq_num):
-                        self.seq_list[seq_num][1] = t
+                    # if self.seq_list.get(seq_num):
+                    #     self.seq_list[seq_num][1] = t
 
     def send_ack(self, seq):
+        '''
+        This method creates a Packet object with packet Type as ACK,
+        assigns sequence number of the packet to be acked as the ack number,
+        and sends it to the destination.
+        '''
         p = Packet(ACK, 0, 1, seq)
         self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
 
@@ -206,6 +234,15 @@ class MyReliableUDPSocket:
         return pkt
 
     def connect(self):
+        '''
+        This method is called from the client host. It initiates
+        a connection with a server by
+        1) sending SYN packet.
+        2) receives SYNACK
+        3) and sends ACK to server.
+
+        Now the connection is established.
+        '''
         self.socket_type = 'client'
         print(f"connecting to {self.dest_addr}:{self.dest_port}")
         self.connected = False 
@@ -225,6 +262,11 @@ class MyReliableUDPSocket:
         return self.connected
 
     def listen_for_connection(self):
+        '''
+        This method is called from the server host. It receives
+        SYN packet sent by a client and sends back a SYNACK packet.
+        Now it receives an ACK and connection is established.
+        '''
         self.socket_type = 'server'
         print(f"listening for connection on {self.src_port}")
         self.connected = False 
@@ -246,6 +288,14 @@ class MyReliableUDPSocket:
         return self.connected
 
     def get_packets(self, data):
+        '''
+        This method takes data to be sent as input, breaks it into 
+        pieces of size less than the PACKET_SIZE and creates a Packet
+        object for each of the pieces. Each packet is assigned a sequence
+        number in the order of the original data.
+
+        returns a list of Packet objects.
+        '''
         pkt_list = []
         num_packets = math.ceil(len(data)/PACKET_SIZE)
         for i in range(0, len(data), PACKET_SIZE):
@@ -258,6 +308,12 @@ class MyReliableUDPSocket:
         return pkt_list
 
     def write(self, data):
+        '''
+        This method takes data to be sent to destination host as input,
+        uses get_packets() method to get list of packets formed from the original data
+        and sends each packet to destination host in order of sequence numbers.
+        It also saves each sequence number, packet objects and time in a dictionary (seq_list)
+        '''
         pkt_list = self.get_packets(data)
 
         for i in range(len(pkt_list)):
@@ -269,6 +325,12 @@ class MyReliableUDPSocket:
             self.seq_list[pkt_list[i].seq_num] = [pkt_list[i], time.time()]
 
     def close(self):
+        '''
+        This method initiates the closing of a socket. It is invoked form the client
+        side of the socket. It first waits for all the sent packets to be acked and 
+        sends a FIN packet to server. Further steps are handled by recv_thread.
+        Once the recv_thread ends execution, the connection is closed.
+        '''
         while len(self.seq_list)>0:
             pass
         print("close called")
