@@ -1,18 +1,19 @@
 # import socket
-import threading
-import time
-import sys
 from MyReliableUDPSocket import MyReliableUDPSocket, Packet
 
 
-rdt_socket = MyReliableUDPSocket('localhost', 3001, 'localhost', 3000, False)
-# rdt_socket = MyReliableUDPSocket('localhost', 3001, 'localhost', 3000)
+# rdt_socket = MyReliableUDPSocket('localhost', 3001, False)
+rdt_socket = MyReliableUDPSocket('localhost', 3001)
 
 rdt_socket.create()
 
-if rdt_socket.listen_for_connection():
+while True:
+    if rdt_socket.listen_for_connection():
         print(f"connected to {rdt_socket.dest_addr}:{rdt_socket.dest_port} succesfully\n")
 
+        req = rdt_socket.read()
+
+        print(req)
 
 # start = time.time()
 # while not rdt_socket.listen_for_connection():
@@ -21,10 +22,6 @@ if rdt_socket.listen_for_connection():
 #         print("timeout")
         # exit()
 
-
-req = rdt_socket.read()
-
-print(req)
 
 # rdt_socket.write('hello from server')
 

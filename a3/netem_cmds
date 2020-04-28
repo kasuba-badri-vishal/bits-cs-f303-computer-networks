@@ -1,0 +1,32 @@
+PACKET DELAY
+
+sudo tc qdisc add dev lo root netem delay 100ms 10ms 25%
+sudo tc qdisc del dev lo root netem delay 100ms 10ms 25%
+sudo tc qdisc replace dev lo root netem delay 100ms 10ms 25%
+
+
+PACKET LOSS
+
+sudo tc qdisc add dev lo root netem loss 5%
+sudo tc qdisc del dev lo root netem loss 5%
+sudo tc qdisc replace dev lo root netem loss 5%
+
+
+PACKET CORRUPTION
+
+sudo tc qdisc add dev lo root netem corrupt 5%
+sudo tc qdisc del dev lo root netem corrupt 5%
+sudo tc qdisc replace dev lo root netem corrupt 5%
+
+
+PACKET REORDERING
+
+sudo tc qdisc add dev lo root netem gap 5 delay 10ms
+sudo tc qdisc del dev lo root netem gap 5 delay 10ms
+sudo tc qdisc replace dev lo root netem gap 5 delay 10ms
+
+                    or
+
+sudo tc qdisc change add lo root netem delay 10ms reorder 25% 50%
+sudo tc qdisc change del lo root netem delay 10ms reorder 25% 50%
+sudo tc qdisc change replace lo root netem delay 10ms reorder 25% 50%

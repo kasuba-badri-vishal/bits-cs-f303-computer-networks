@@ -5,8 +5,7 @@ import time
 import hashlib
 import math
 
-PACKET_SIZE = 128 # max size of the body of a packet
-# PACKET_SIZE = 65535 # max size of the body of a packet
+PACKET_SIZE = 8 # max size of the body of a packet
 TIMEOUT = 1 # retransmission timeout
 DATA = 0    # data flag in packet
 ACK = 1     # ack flag in packet. data becomes ack number
@@ -102,11 +101,6 @@ class MyReliableUDPSocket:
         self.recv_thread = threading.Thread(target = self.recv_t) # Thread which takes care of receiving packets.
         self.retransmit_thread = threading.Thread(target = self.check_and_retransmit) # Thread which takes care of packet retransmissions.
         self.timeout_thread = threading.Thread(target = self.timeout_check)
-
-        self.throughput_data_received = 0
-        self.goodput_data_received = 0
-        self.throughput_data_start_time = 0
-        self.goodput_data_start_time = 0
         # self.recv_thread.daemon = True
         # self.retransmit_thread.daemon = True
 
@@ -149,13 +143,6 @@ class MyReliableUDPSocket:
         # self.retransmit_thread.join()
         # self.listen_for_connection()
 
-    def calc_throughput(self):
-        throughput = self.throughput_data_received/(time.time()-self.throughput_data_start_time)
-        with open(f"log.txt",'a+') as f:
-            f.write(f"{throughput}\n")
-        self.throughput_data_received = 0
-        self.throughput_data_start_time = 0
-
     def recv_t(self):
         '''
         This function is the target of recv_thread. Until the connection is closed
@@ -169,25 +156,22 @@ class MyReliableUDPSocket:
                 break
             # print(msg, addr)
             pkt, check = Packet.decode_pkt(msg)
-            
-            self.throughput_data_received += len(msg)
-            if self.throughput_data_start_time == 0:
-                self.throughput_data_start_time = time.time()
-
             if check:
                 # print(f'received packet\n{pkt}')
                 if pkt.Type==DATA:
+                    # if check:
                     self.send_ack(pkt.seq_num)
                     if self.recv_seq_dict.get(pkt.seq_num)==None:
                         self.recv_buffer[pkt.seq_num] = pkt
                         self.recv_seq_dict[pkt.seq_num] = 1
                         if self.verbose:
                             print(f"received packet {pkt.seq_num}/{pkt.num_packets}")
-                    if len(self.recv_buffer)==pkt.num_packets:
+                    # if len(self.recv_buffer)==pkt.num_packets:
+                    if len(self.recv_buffer)>0:
                         if max(list(self.recv_buffer.keys())) - min(list(self.recv_buffer.keys())) == pkt.num_packets-1:
                             self.ready_to_read = True
-                            self.calc_throughput()
                 elif pkt.Type==ACK:
+                    # if check:
                     if self.verbose:
                         print(f"received ack {pkt.data}")
                     if self.sent_seq_dict.get(pkt.data)!=None:
@@ -218,7 +202,7 @@ class MyReliableUDPSocket:
                         time.sleep(CONNECTION_CLOSE_WAIT)
                         self.connected = False
             elif check==False:
-                print("received error packet discarding........")
+                
                     
     def reconstruct_data(self, pkt_list = ""):
         '''
@@ -228,8 +212,7 @@ class MyReliableUDPSocket:
         
         returns data as string
         '''
-        # for s,p in self.recv_buffer.items():
-        #     print(s, p.get_string())
+        # print(self.recv_buffer)
         data = ""
         if pkt_list=="":
             sorted_list = sorted(self.recv_buffer.items(), key = lambda x:x[0])
@@ -250,23 +233,20 @@ class MyReliableUDPSocket:
         '''
         while self.connected:
             t = time.time()
+            if self.socket_type=='client' and t-self.last_write_time >= CONNECTION_CLOSE_TIME:
+                self.connection_timedout = True
 
             time.sleep(0.5)
             seq_dict = self.sent_seq_dict.copy()
 
             for seq_num in seq_dict.keys():
                 if t - seq_dict[seq_num][1] >= TIMEOUT:
-                    self.last_active_time = t
-
                     self.s.sendto(seq_dict[seq_num][0].get_string(), (self.dest_addr, self.dest_port))
                     if self.verbose:
                         print(f"retransmitting seq {seq_num}")
                     # self.sent_seq_dict[seq_num][1] = t
                     if self.sent_seq_dict.get(seq_num):
                         self.sent_seq_dict[seq_num][1] = t
-            
-                elif self.socket_type=='client' and t-self.last_active_time >= CONNECTION_CLOSE_TIME:
-                    self.connection_timedout = True
 
     def send_ack(self, seq):
         '''
@@ -311,7 +291,7 @@ class MyReliableUDPSocket:
                 self.initialise_connection_vars()
                 self.connected = True
                 self.timeout_thread.start()
-                self.last_active_time = time.time()
+                self.last_write_time = time.time()
                 self.recv()
         return self.connected
 
@@ -335,13 +315,13 @@ class MyReliableUDPSocket:
                 self.dest_port = addr[1]
                 p = Packet(SYNACK, 0, 1, int(pkt.seq_num)+1)
                 self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
-                self.connected = True
-                self.initialise_connection_vars()
-                self.recv()
                 while not self.connected:
                     msg, addr = self.s.recvfrom(1024)
                     pkt, check = Packet.decode_pkt(msg)
-                    # if pkt.Type == ACK:
+                    if pkt.Type == ACK:
+                        self.connected = True
+                        self.initialise_connection_vars()
+                        self.recv()
         return self.connected
 
     def get_packets(self, data):
@@ -373,10 +353,9 @@ class MyReliableUDPSocket:
         '''
 
         while len(self.sent_seq_dict) !=0:
-            time.sleep(1)
             pass
 
-        self.last_active_time = time.time()
+        self.last_write_time = time.time()
 
         pkt_list = self.get_packets(data)
         print(len(data))
