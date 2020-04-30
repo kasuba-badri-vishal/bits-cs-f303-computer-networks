@@ -5,16 +5,17 @@ import time
 import hashlib
 import math
 
-PACKET_SIZE = 128 # max size of the body of a packet
-# PACKET_SIZE = 65535 # max size of the body of a packet
+# MAX_PAYLOAD_SIZE = 65535 # max size of the body of a packet
+MAX_PAYLOAD_SIZE = 1024 # max size of the body of a packet
+MAX_PACKET_SIZE = MAX_PAYLOAD_SIZE + 1 + 10 + 10 + 59 + 14 # max size of the body of a packet
 TIMEOUT = 1 # retransmission timeout
 DATA = 0    # data flag in packet
 ACK = 1     # ack flag in packet. data becomes ack number
 SYN = 2     # syn packet flag
 SYNACK = 3  # synack packet flag
-FIN = 3     # fin packet flag
+FIN = 4     # fin packet flag
 CONNECTION_CLOSE_TIME = 30  # closes after this time of inactivity
-CONNECTION_CLOSE_WAIT = 5   # wait time after last fin is sent
+CONNECTION_CLOSE_WAIT = 3   # wait time after last fin is sent
 CONNECTION_TRY_TIME_OUT = 4 # wait time to receive synack while connecting to a server
 # PACKET_STUCT = ['Type', 'checksum', 'seq_num', 'num_packets', 'data']
 
@@ -72,12 +73,6 @@ class Packet:
 
         return (p, check)
 
-def call_on_timeout(t_minus, func, args = dict()):
-    start = time.time()
-    while time.time() - start < t_minus:
-        time.sleep(1)
-    func(**args)
-
 
 class MyReliableUDPSocket:
     '''
@@ -91,17 +86,23 @@ class MyReliableUDPSocket:
 
         self.connected = False # connection status
         self.connection_timedout = False # connection timout status
+        
+        self.connect_try = 0
 
     def initialise_connection_vars(self):
+        '''
+        This function initializes data structures required after the
+        connection is established.
+        '''
         self.cur_seq = 0 # sequence number to be used for a new packet
         self.sent_seq_dict = dict() # a dictionary with unacked packet sequence numbers as keys and (Packet object, time created) tuple as values
         self.recv_seq_dict = dict() # a dictionary containing sequence numbers of all packets received until now
         self.recv_buffer = dict() # list of unordered packets received.
         self.ready_to_read = False # boolean value which tells read() method that all packets are received.
-        
+
         self.recv_thread = threading.Thread(target = self.recv_t) # Thread which takes care of receiving packets.
         self.retransmit_thread = threading.Thread(target = self.check_and_retransmit) # Thread which takes care of packet retransmissions.
-        self.timeout_thread = threading.Thread(target = self.timeout_check)
+        # self.timeout_thread = threading.Thread(target = self.timeout_check)
 
         self.throughput_data_received = 0
         self.goodput_data_received = 0
@@ -109,7 +110,7 @@ class MyReliableUDPSocket:
         self.goodput_data_start_time = 0
         # self.recv_thread.daemon = True
         # self.retransmit_thread.daemon = True
-
+        self.connect_try = 0
 
     def create(self):
         '''
@@ -117,6 +118,7 @@ class MyReliableUDPSocket:
         source address and source port.
         '''
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.s.settimeout(5)
         self.s.bind((self.src_addr, self.src_port))
 
     def read(self):
@@ -129,9 +131,22 @@ class MyReliableUDPSocket:
         data = ''
         # if self.connected:
         while self.ready_to_read==False:
+            if self.connected==False:
+                return ""
             pass
+        
+        if self.socket_type=='server':
+            dt = time.time() - self.throughput_data_start_time
+            amount = 0
+            for p in self.recv_buffer.values():
+                amount += len(p.get_string())
+            with open('throughput_log.txt', 'a+') as f:
+                f.write(f'{amount/dt}\n')
+            self.throughput_data_start_time = 0
 
         data = self.reconstruct_data()
+
+
         self.recv_buffer = dict()
         self.ready_to_read = False
         return data
@@ -140,21 +155,8 @@ class MyReliableUDPSocket:
         '''
         This function starts the recv_thread and retransmit_thread
         '''
-        # self.recv_thread = threading.Thread(target=self.recv_t)
-        # self.retransmit_thread = threading.Thread(target=self.check_and_retransmit)
         self.recv_thread.start()
         self.retransmit_thread.start()
-
-        # self.recv_thread.join()
-        # self.retransmit_thread.join()
-        # self.listen_for_connection()
-
-    def calc_throughput(self):
-        throughput = self.throughput_data_received/(time.time()-self.throughput_data_start_time)
-        with open(f"log.txt",'a+') as f:
-            f.write(f"{throughput}\n")
-        self.throughput_data_received = 0
-        self.throughput_data_start_time = 0
 
     def recv_t(self):
         '''
@@ -162,21 +164,26 @@ class MyReliableUDPSocket:
         it receives packets, decodes them into Packet objects and does operations
         based on the packet Type.
         '''
+        if self.socket_type=='client': self.s.settimeout(30)
+        else: self.s.settimeout(None)
+
         while self.connected:
             try:
-                msg, addr = self.s.recvfrom(1024)
+                msg, addr = self.s.recvfrom(MAX_PACKET_SIZE)
             except:
-                break
+                if self.socket_type == 'client':
+                    self.close()
+                    continue
             # print(msg, addr)
             pkt, check = Packet.decode_pkt(msg)
-            
-            self.throughput_data_received += len(msg)
-            if self.throughput_data_start_time == 0:
-                self.throughput_data_start_time = time.time()
 
             if check:
                 # print(f'received packet\n{pkt}')
                 if pkt.Type==DATA:
+                    
+                    if self.throughput_data_start_time==0 and self.socket_type=='server':
+                        self.throughput_data_start_time = time.time()
+
                     self.send_ack(pkt.seq_num)
                     if self.recv_seq_dict.get(pkt.seq_num)==None:
                         self.recv_buffer[pkt.seq_num] = pkt
@@ -186,12 +193,18 @@ class MyReliableUDPSocket:
                     if len(self.recv_buffer)==pkt.num_packets:
                         if max(list(self.recv_buffer.keys())) - min(list(self.recv_buffer.keys())) == pkt.num_packets-1:
                             self.ready_to_read = True
-                            self.calc_throughput()
+                            
                 elif pkt.Type==ACK:
                     if self.verbose:
                         print(f"received ack {pkt.data}")
                     if self.sent_seq_dict.get(pkt.data)!=None:
                         del self.sent_seq_dict[pkt.data]
+                
+                elif pkt.Type==SYNACK:
+                    if self.verbose:
+                        print(f"received synack {pkt.data}")
+                    self.send_ack(int(pkt.seq_num + 1))
+                        
 
                 elif pkt.Type==FIN:
                     if self.verbose:
@@ -205,21 +218,29 @@ class MyReliableUDPSocket:
                             print("sent fin2")
 
                         while self.connected:
-                            msg, addr = self.s.recvfrom(1024)
+                            msg, addr = self.s.recvfrom(MAX_PACKET_SIZE)
                             pkt, check = Packet.decode_pkt(msg)
-                            # print("received synack", pkt)
                             if pkt.Type==ACK:
                                 if self.verbose:
                                     print("received ack2")
-                                # time.sleep()
                                 self.connected = False
-                        # self.listen_for_connection()
+                                print("connection timedout! press any key")
                     else:
                         time.sleep(CONNECTION_CLOSE_WAIT)
                         self.connected = False
+                        self.retransmit_thread.join()
+                        print("connection timedout! press any key")
+                        if self.verbose:
+                            print("connection timedout!")
+
             elif check==False:
-                print("received error packet discarding........")
-                    
+                if self.verbose==True:
+                    print("received error packet discarding........")
+
+        self.retransmit_thread.join()
+        # if self.socket_type=='client': print('client recv exited')
+        # if self.socket_type=='server': print('server recv exited')
+
     def reconstruct_data(self, pkt_list = ""):
         '''
         This function uses the unordered packets in the recv_buffer,
@@ -233,6 +254,7 @@ class MyReliableUDPSocket:
         data = ""
         if pkt_list=="":
             sorted_list = sorted(self.recv_buffer.items(), key = lambda x:x[0])
+            # print(f"reconstructed {len(sorted_list)}")
             for seq_n, p in sorted_list:
                 data += p.data
         else:
@@ -251,7 +273,9 @@ class MyReliableUDPSocket:
         while self.connected:
             t = time.time()
 
-            time.sleep(0.5)
+            # print(f"recv thread {self.recv_thread.is_alive()} {self.connected}")
+
+            time.sleep(1)
             seq_dict = self.sent_seq_dict.copy()
 
             for seq_num in seq_dict.keys():
@@ -264,9 +288,6 @@ class MyReliableUDPSocket:
                     # self.sent_seq_dict[seq_num][1] = t
                     if self.sent_seq_dict.get(seq_num):
                         self.sent_seq_dict[seq_num][1] = t
-            
-                elif self.socket_type=='client' and t-self.last_active_time >= CONNECTION_CLOSE_TIME:
-                    self.connection_timedout = True
 
     def send_ack(self, seq):
         '''
@@ -276,10 +297,6 @@ class MyReliableUDPSocket:
         '''
         p = Packet(ACK, 0, 1, seq)
         self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
-
-    def create_connected_pkt(self):
-        pkt = Packet(DATA, 0, 1, str(random.randint(1e7, 1e8)))
-        return pkt
 
     def connect(self, dest_addr, dest_port):
         '''
@@ -296,12 +313,21 @@ class MyReliableUDPSocket:
         self.dest_port = dest_port
         print(f"connecting to {self.dest_addr}:{self.dest_port}")
         self.connected = False
+        # self.connect_try += 1
 
         p = Packet(SYN, 0, 1, str(random.randint(1e7, 1e8)))
         self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
 
-        while not self.connected:
-            msg, addr = self.s.recvfrom(1024)
+        tries = 1
+        while (not self.connected) and (tries<=3):
+            try:
+                msg, addr = self.s.recvfrom(MAX_PACKET_SIZE)
+            except socket.timeout:
+                self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
+                print("retrying..", tries)
+                tries += 1
+                continue
+
             pkt, check = Packet.decode_pkt(msg)
             # print("received synack", pkt)
             if self.verbose:
@@ -310,7 +336,7 @@ class MyReliableUDPSocket:
                 self.send_ack(int(pkt.seq_num + 1))
                 self.initialise_connection_vars()
                 self.connected = True
-                self.timeout_thread.start()
+                # self.timeout_thread.start()
                 self.last_active_time = time.time()
                 self.recv()
         return self.connected
@@ -322,10 +348,15 @@ class MyReliableUDPSocket:
         Now it receives an ACK and connection is established.
         '''
         self.socket_type = 'server'
-        print(f"listening for connection on {self.src_port}")
         self.connected = False 
+        
+
         while not self.connected:
-            msg, addr = self.s.recvfrom(1024)
+
+            self.s.settimeout(None)
+            
+            print(f"listening for connection on {self.src_port}")
+            msg, addr = self.s.recvfrom(MAX_PACKET_SIZE)
             pkt, check = Packet.decode_pkt(msg)
             # print("received syn", pkt)
             if pkt.Type==SYN:
@@ -335,13 +366,25 @@ class MyReliableUDPSocket:
                 self.dest_port = addr[1]
                 p = Packet(SYNACK, 0, 1, int(pkt.seq_num)+1)
                 self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
-                self.connected = True
-                self.initialise_connection_vars()
-                self.recv()
-                while not self.connected:
-                    msg, addr = self.s.recvfrom(1024)
-                    pkt, check = Packet.decode_pkt(msg)
-                    # if pkt.Type == ACK:
+                
+
+                self.s.settimeout(5)
+                tries = 0
+                while (not self.connected) and tries<=3:
+                    try:
+                        msg, addr = self.s.recvfrom(MAX_PACKET_SIZE)
+                        pkt, check = Packet.decode_pkt(msg)
+                    except socket.timeout:
+                        self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
+                        tries += 1
+                        print("resending SYNACK")
+                    
+                    if pkt.Type == ACK:
+                        # Connection established here
+                        self.connected = True
+                        self.initialise_connection_vars()
+                        self.recv()
+
         return self.connected
 
     def get_packets(self, data):
@@ -354,13 +397,16 @@ class MyReliableUDPSocket:
         returns a list of Packet objects.
         '''
         pkt_list = []
-        num_packets = math.ceil(len(data)/PACKET_SIZE)
-        for i in range(0, len(data), PACKET_SIZE):
-            if i+PACKET_SIZE<len(data):
-                pkt_list.append(Packet(DATA, self.cur_seq, num_packets, data[i: i+PACKET_SIZE]))
+        num_packets = math.ceil(len(data)/MAX_PAYLOAD_SIZE)        
+        for i in range(0, len(data), MAX_PAYLOAD_SIZE):
+            if i+MAX_PAYLOAD_SIZE<len(data):
+                pkt_list.append(Packet(DATA, self.cur_seq, num_packets, data[i: i+MAX_PAYLOAD_SIZE]))
             else:
                 pkt_list.append(Packet(DATA, self.cur_seq, num_packets, data[i:]))
+        
             self.cur_seq += 1
+            if self.cur_seq>(2**32-1):
+                self.cur_seq = 0
 
         return pkt_list
 
@@ -371,6 +417,7 @@ class MyReliableUDPSocket:
         and sends each packet to destination host in order of sequence numbers.
         It also saves each sequence number, packet objects and time in a dictionary (sent_seq_dict)
         '''
+        if self.connected==False: return
 
         while len(self.sent_seq_dict) !=0:
             time.sleep(1)
@@ -379,7 +426,7 @@ class MyReliableUDPSocket:
         self.last_active_time = time.time()
 
         pkt_list = self.get_packets(data)
-        print(len(data))
+        # print(len(data))
 
         for i in range(len(pkt_list)):
             # print(f"sending packet {i+1}/{len(pkt_list)}\n{Packet.decode_pkt(pkt_list[i].get_string())}")
@@ -388,16 +435,6 @@ class MyReliableUDPSocket:
             self.s.sendto(pkt_list[i].get_string(), (self.dest_addr, self.dest_port))
 
             self.sent_seq_dict[pkt_list[i].seq_num] = [pkt_list[i], time.time()]
-
-    def timeout_check(self):
-        '''
-        This method is run on the timeout_thread and checks if connection
-        is timed out every second. Closes the connection on timeout (inactivity).
-        '''
-        while self.connection_timedout == False:
-            time.sleep(1)
-
-        self.close()
 
     def close(self):
         '''
@@ -408,14 +445,19 @@ class MyReliableUDPSocket:
         '''
         while len(self.sent_seq_dict)>0:
             pass
-        print("close called")
+        # print("close called")
         p = Packet(FIN, 0, 1, str(random.randint(1e7, 1e8)))
         if self.verbose:
             print("sent fin1")
         self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
 
-        self.recv_thread.join()
-        self.retransmit_thread.join()
-        print("exiting..")
+        if threading.current_thread() is threading.main_thread():
+            self.recv_thread.join()
+            self.retransmit_thread.join()
+        # else:
+        #     self.retransmit_thread.join()
+        if self.verbose:
+            print("exiting..")
+
         return self.connected
                                 
