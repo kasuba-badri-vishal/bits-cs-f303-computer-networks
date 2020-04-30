@@ -7,7 +7,7 @@ import math
 
 # MAX_PAYLOAD_SIZE = 65535 # max size of the body of a packet
 MAX_PAYLOAD_SIZE = 1024 # max size of the body of a packet
-MAX_PACKET_SIZE = MAX_PAYLOAD_SIZE + 1 + 10 + 10 + 59 + 14 # max size of the body of a packet
+MAX_PACKET_SIZE = MAX_PAYLOAD_SIZE + 1 + 10 + 10 + 59 + 14 # max total size of a packet
 TIMEOUT = 1 # retransmission timeout
 DATA = 0    # data flag in packet
 ACK = 1     # ack flag in packet. data becomes ack number
@@ -17,7 +17,8 @@ FIN = 4     # fin packet flag
 CONNECTION_CLOSE_TIME = 30  # closes after this time of inactivity
 CONNECTION_CLOSE_WAIT = 3   # wait time after last fin is sent
 CONNECTION_TRY_TIME_OUT = 4 # wait time to receive synack while connecting to a server
-# PACKET_STUCT = ['Type', 'checksum', 'seq_num', 'num_packets', 'data']
+CONNECTION_RETRIES = 6
+# PACKET_VARS = ['Type', 'checksum', 'seq_num', 'num_packets', 'data']
 
 class Packet:
     '''
@@ -313,13 +314,12 @@ class MyReliableUDPSocket:
         self.dest_port = dest_port
         print(f"connecting to {self.dest_addr}:{self.dest_port}")
         self.connected = False
-        # self.connect_try += 1
 
         p = Packet(SYN, 0, 1, str(random.randint(1e7, 1e8)))
         self.s.sendto(p.get_string(), (self.dest_addr, self.dest_port))
 
         tries = 1
-        while (not self.connected) and (tries<=3):
+        while (not self.connected) and (tries<=CONNECTION_RETRIES):
             try:
                 msg, addr = self.s.recvfrom(MAX_PACKET_SIZE)
             except socket.timeout:
@@ -336,7 +336,6 @@ class MyReliableUDPSocket:
                 self.send_ack(int(pkt.seq_num + 1))
                 self.initialise_connection_vars()
                 self.connected = True
-                # self.timeout_thread.start()
                 self.last_active_time = time.time()
                 self.recv()
         return self.connected
@@ -350,7 +349,6 @@ class MyReliableUDPSocket:
         self.socket_type = 'server'
         self.connected = False 
         
-
         while not self.connected:
 
             self.s.settimeout(None)
@@ -369,8 +367,8 @@ class MyReliableUDPSocket:
                 
 
                 self.s.settimeout(5)
-                tries = 0
-                while (not self.connected) and tries<=3:
+                tries = 1
+                while (not self.connected) and tries<=CONNECTION_RETRIES:
                     try:
                         msg, addr = self.s.recvfrom(MAX_PACKET_SIZE)
                         pkt, check = Packet.decode_pkt(msg)
@@ -454,8 +452,7 @@ class MyReliableUDPSocket:
         if threading.current_thread() is threading.main_thread():
             self.recv_thread.join()
             self.retransmit_thread.join()
-        # else:
-        #     self.retransmit_thread.join()
+
         if self.verbose:
             print("exiting..")
 
